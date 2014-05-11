@@ -1,0 +1,29 @@
+{
+  "name": "oath",
+  "version": "0.0.0",
+  "description": "a bare-bones library for teaching promises",
+  "main": "oath.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/reem/oath.git"
+  },
+  "keywords": [
+    "promises",
+    "teaching",
+    "bare-bones"
+  ],
+  "author": "Jonathan Reem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reem/oath/issues"
+  },
+  "homepage": "https://github.com/reem/oath",
+  "dependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.18.2",
+    "underscore": "^1.6.0"
+  }
+}
