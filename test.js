@@ -1,12 +1,9 @@
-var oath = require('./oath.js');
-
-var chai = require('chai');
-var expect = chai.expect();
-var assert = chai.asser();
+var expect = chai.expect;
+var assert = chai.assert;
 
 describe('Oath', function () {
-  it('Should call then with the right value when a promise is resolved.', function () {
-    it('Should call then on a promise resolution.', function (done) {
+  describe('then', function () {
+    it('Should call then on a promise resolution.', function () {
       var makePromise = function () {
         var defer = oath.defer();
         setTimeout(function () {
@@ -15,7 +12,7 @@ describe('Oath', function () {
         return defer;
       };
       makePromise()
-        .then(done());
+        .then(done);
     });
 
     it('Should pass a resolved value to then.', function (done) {
@@ -34,7 +31,7 @@ describe('Oath', function () {
     });  
   });
 
-  it('Should call fail with the error if a promise is rejected.', function (done) {
+  describe('fail', function () {
     it('Should call fail on a rejection.', function () {
       var failingPromise = function () {
         var defer = oath.defer();
