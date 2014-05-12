@@ -19,7 +19,8 @@ var oath = {};
 
   // The public API for adding functions that want access to the value in the
   // prmise when the promise is resolved/fulfilled.
-  Promise.prototype.then = function (success) {
+  Promise.prototype.then = function (success, optFailure) {
+    if (optFailure) this.fail(optFailure);
     // If we already have a callback registered, then throw an error.
     if (this.owed) {
       throw new Error("Tried to then a promise twice.");
