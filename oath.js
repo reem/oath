@@ -8,9 +8,9 @@ var oath = {};
 
   // This is a promise. It's a value with an associated temporal
   // status. The value depends on the status.
-  var Promise = function () {
-    this.value  = future;
-    this.status = waiting;
+  var Promise = function (value, status) {
+    this.value  = value  || future;
+    this.status = status || waiting;
 
     // So we can pass these methods as callbacks without having to worry about 
     // putting .bind(this) everywhere
@@ -193,8 +193,18 @@ var oath = {};
     };
   };
 
+  Promise.resolved = function (value) {
+    return new Promise(value, resolved);
+  };
+
+  Promise.rejected = function (value) {
+    return new Promise(error, rejected);
+  };
+
   _.extend(exports, {
     defer: defer,
-    promisify: promisify
+    promisify: promisify,
+    resolved: Promise.resolved,
+    reject: Promise.rejected
   });
 }(oath));
