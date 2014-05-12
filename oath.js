@@ -1,12 +1,39 @@
 var oath = {};
 
 (function (exports) {
-  var Promise = function () {
+  var future = {}, rejected = {}, resolved = {}, waiting  = {};
 
+  var Promise = function () {
+    this.value  = future;
+    this.status = waiting;
+    _.bindAll(this, 'then', 'fail', 'fulfill', 'abandon');
   };
 
-  Promise.prototype.then = function () {
+  Promise.prototype.then = function (success) {
+    if (this.owed) {
+      throw new Error("Tried to then a promise twice.");
+    }
 
+    this.owed = success;
+    this.next = defer();
+
+    if (this.status === resolved) {
+      this.next.resolve(this.owed(this.value));
+    }
+
+    return this.next.promise;
+  };
+
+  Promise.prototype.fail = function (failure) {
+    if (this.onFail) {
+      throw new Error("Tried to fail a promise twice.");
+    }
+
+    this.onFail = failure;
+
+    if (this.status === rejected) {
+      this.onFail(this.value);
+    }
   };
 
   Promise.prototype.fail = function () {
