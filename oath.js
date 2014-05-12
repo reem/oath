@@ -160,11 +160,15 @@ var oath = {};
   var failable = function (nodeStyle, error, success) {
     nodeStyle(function (err, data) {
       if (err) {
+        // Call the error function if there is an error.
         error(err);
       } else {
+        // Call the success function if we get data.
         success(data);
       }
     });
+    // Now we can do something like:
+    // failable(fs.readFile, console.error, sendData);
   };
 
   // Creates a promise out of a node-style callback function.
