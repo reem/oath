@@ -1,7 +1,7 @@
 var oath = {};
 
 (function (exports) {
-  var future = {}, rejected = {}, resolved = {}, waiting  = {};
+  var future = {}, rejected = {}, resolved = {}, waiting = {};
 
   var Promise = function (value, status) {
 
@@ -12,14 +12,6 @@ var oath = {};
   };
 
   Promise.prototype.fail = function (failure) {
-
-  };
-
-  Promise.prototype.fulfill = function (data, force) {
-
-  };
-
-  Promise.prototype.abandon = function (error, force) {
 
   };
 
@@ -39,26 +31,12 @@ var oath = {};
 
   };
 
-  var failable = function (nodeStyle, error, success) {
-
-  };
-
   var promisify = function (nodeStyle, context) {
-
-  };
-
-  Promise.resolved = function (value) {
-
-  };
-
-  Promise.rejected = function (value) {
 
   };
 
   _.extend(exports, {
     defer: defer,
-    promisify: promisify,
-    resolved: Promise.resolved,
-    rejected: Promise.rejected
+    promisify: promisify
   });
 }(oath));
