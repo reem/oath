@@ -169,14 +169,22 @@ var oath = {};
 
   // Creates a promise out of a node-style callback function.
   var promisify = function (nodeStyle, context) {
+    // The promisified function
     return function () {
       var args = _.toArray(arguments);
       var deferred = defer();
+      // Make the async call.
       failable(
+        // Here we can re-use the classic failable pattern by wrapping
+        // nodeStyle in a function that takes only a callback and doing
+        // some arguments/apply magic to it.
         function (cb) { nodeStyle.apply(context, args.concat([cb])); },
+        // failable takes an error and a success function, which are actually
+        // just .reject and .resolve in our case, making this very simple.
         deferred.reject,
         deferred.resolve
       );
+      // Promisified functions should return promises.
       return deferred.promise;
     };
   };
