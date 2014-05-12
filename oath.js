@@ -127,23 +127,35 @@ var oath = {};
     // so we just drop it.
   };
 
+  // This is the object returned by defer() that manages a promise.
+  // It provides an interface for resolving and rejecting promises
+  // while also allowing you to return the promise out of the
+  // promise-creating function.
   var Deferred = function (promise) {
     this.promise = promise;
+
+    // This lets us use defer.resolve and defer.reject as callbacks
+    // without worrying about doing .bind(this) everywhere.
     _.bindAll(this, 'resolve', 'reject');
   };
 
+  // Resolve the contained promise with data.
   Deferred.prototype.resolve = function (data) {
     this.promise.fulfill(data);
   };
 
+  // Reject the contained promise with an error.
   Deferred.prototype.reject = function (error) {
     this.promise.abandon(error);
   };
 
+  // The external interface for creating promises
+  // and resolving them.
   var defer = function () {
     return new Deferred(new Promise());
   };
 
+  // Abstracts away a common node pattern.
   var failable = function (nodeStyle, error, success) {
     nodeStyle(function (err, data) {
       if (err) {
@@ -154,6 +166,7 @@ var oath = {};
     });
   };
 
+  // Creates a promise out of a node-style callback function.
   var promisify = function (nodeStyle, context) {
     return function () {
       var args = _.toArray(arguments);
