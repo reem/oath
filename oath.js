@@ -36,11 +36,35 @@ var oath = {};
     }
   };
 
-  Promise.prototype.fail = function () {
+  Promise.prototype.fulfill = function (data) {
+    if (this.status !== waiting) {
+      throw new Error("Tried to fulfill a promise twice.");
+    }
 
+    this.status = resolved;
+    if (this.owed) {
+      this.value = this.owed(data);
+      if (this.value && this.value.then) {
+
+        this.value.then(this.next.resolve);
+        // Interrupt a success chain with a failure.
+        this.value.fail(this.next.reject);
+      }
+    }
   };
 
-  var Deferred = function () {
+  Promise.prototype.abandon = function (error) {
+    this.status = rejected;
+    if (this.onFail) {
+      this.value = error;
+      this.onFail(error);
+    } else {
+      if (this.next) {
+        // Propagate failure
+        this.next.reject(error);
+      }
+    }
+  };
 
   };
 
