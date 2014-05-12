@@ -66,14 +66,17 @@ var oath = {};
     }
   };
 
+  var Deferred = function (promise) {
+    this.promise = promise;
+    _.bindAll(this, 'resolve', 'reject');
   };
 
-  Deferred.prototype.reject = function(error) {
-    
+  Deferred.prototype.resolve = function (data) {
+    this.promise.fulfill(data);
   };
 
-  Deferred.prototype.resolve = function(value) {
-    
+  Deferred.prototype.reject = function (error) {
+    this.promise.abandon(error);
   };
 
   var defer = function () {
