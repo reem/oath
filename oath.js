@@ -193,10 +193,12 @@ var oath = {};
     };
   };
 
+  // Construct an already-resolved promise containing the passed-in value.
   Promise.resolved = function (value) {
     return new Promise(value, resolved);
   };
 
+  // Construct an already-rejected promise containg the passed-in error.
   Promise.rejected = function (value) {
     return new Promise(error, rejected);
   };
