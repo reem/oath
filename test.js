@@ -1,27 +1,26 @@
 var expect = chai.expect;
 var assert = chai.assert;
 
+var promiseTimeout = function (func, time) {
+  var defer = oath.defer();
+  setTimeout(function () {
+    defer.resolve(func());
+  }, time);
+  return defer.promise;
+};
+
 describe('Oath', function () {
   describe('then', function () {
     it('Should call then on a promise resolution.', function (done) {
-      var makePromise = function () {
-        var defer = oath.defer();
-        setTimeout(function () {
-          defer.resolve();
-        }, 5);
-        return defer.promise;
-      };
-      makePromise()
+      promiseTimeout(function () {}, 5)
         .then(done);
     });
 
     it('Should pass a resolved value to then.', function (done) {
       var makePromise = function (num) {
-        var defer = oath.defer();
-        setTimeout(function () {
-          defer.resolve(num);
-        }, 5);
-        return defer.promise;
+        return promiseTimeout(function () {
+          return num;
+        });
       };
       makePromise(6)
         .then(function (num) {
@@ -96,20 +95,15 @@ describe('Oath', function () {
   describe('chaining', function () {
     it('Should allow you to chain promises using then.', function (done) {
       var step1 = function (num) {
-        var defer = oath.defer();
-        setTimeout(function () {
-          defer.resolve(num + 10);
+        return promiseTimeout(function () {
+          return num + 10;
         }, 5);
-        return defer.promise;
       };
 
       var step2 = function (num) {
-        var defer = oath.defer();
-        setTimeout(function () {
-          defer.resolve(num + 20);
+        return promiseTimeout(function () {
+          return num + 20;
         }, 5);
-        defer.myCheck = "Hello";
-        return defer.promise;
       };
 
       step1(100).then(step2).then(function (num) {
@@ -120,11 +114,9 @@ describe('Oath', function () {
 
     it('Should jump directly to fail if an error is thrown during chaining.', function (done) {
       var step1 = function (num) {
-        var defer = oath.defer();
-        setTimeout(function () {
-          defer.resolve(num + 10);
+        return promiseTimeout(function () {
+          return num + 10;
         }, 5);
-        return defer.promise;
       };
 
       var failingStep = function (num) {
