@@ -4,12 +4,12 @@ var oath = {};
   // Since objects only compare === to the same object (i.e. the same reference)
   // we can do something like this instead of using integer enums because we can't
   // ever accidentally compare these to other values and get a false-positive.
-  var future = {}, rejected = {}, resolved = {}, waiting  = {};
+  var rejected = {}, resolved = {}, waiting  = {};
 
   // This is a promise. It's a value with an associated temporal
   // status. The value depends on the status.
   var Promise = function (value, status) {
-    this.value  = value  || future;
+    this.value  = value;
     this.status = status || waiting;
 
     // So we can pass these methods as callbacks without having to worry about 
