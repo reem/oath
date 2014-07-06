@@ -12,15 +12,14 @@ var oath = {};
     this.value  = value;
     this.status = status || waiting;
 
-    // So we can pass these methods as callbacks without having to worry about 
+    // So we can pass these methods as callbacks without having to worry about
     // putting .bind(this) everywhere
     _.bindAll(this, 'then', 'fail', 'fulfill', 'abandon');
   };
 
   // The public API for adding functions that want access to the value in the
-  // prmise when the promise is resolved/fulfilled.
-  Promise.prototype.then = function (success, optFailure) {
-    if (optFailure) this.fail(optFailure);
+  // promise when the promise is resolved/fulfilled.
+  Promise.prototype.then = function (success) {
     // If we already have a callback registered, then throw an error.
     if (this.owed) {
       throw new Error("Tried to then a promise twice.");
@@ -37,7 +36,7 @@ var oath = {};
     // immediately call the success callback and passthrough
     // to the next .then() in the chain, if there is one.
     if (this.status === resolved) {
-      this.fulfill(data, true); // Force the call to go through.
+      this.fulfill(this.value, true); // Force the call to go through.
     }
 
     // Return the next promise, to allow for chaining .then() calls.
@@ -79,7 +78,7 @@ var oath = {};
       throw new Error("Tried to fulfill a promise twice.");
     }
 
-    // Set the status to resolved, so future .then()s will throw errors. 
+    // Set the status to resolved, so future .fulfill()s will throw errors.
     this.status = resolved;
 
     // If there's no registered function, just don't do anything.
@@ -199,7 +198,7 @@ var oath = {};
   };
 
   // Construct an already-rejected promise containg the passed-in error.
-  Promise.rejected = function (value) {
+  Promise.rejected = function (error) {
     return new Promise(error, rejected);
   };
 
